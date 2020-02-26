@@ -1,27 +1,58 @@
 #include <iostream>
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <cstdio>
 
 void VpisTabela(char tabela[][8], int n);
-void VpisLadjic(char tabela[][8], int n, const char* imeIgralnoPolje);
 void IzpisTabela(char tabela[][8], int n, const char* imeIgralnoPolje);
+void VpisLadjic(char tabela[][8], int n, const char* imeIgralnoPolje);
+void ZadetekLadjice(char tabela[][8], int n, const char* imeIgralnoPolje);
+void IzbrisLadjice(char tabela[][8], int n, char znak);
+void ZamenjajIgralca();
+bool KonecIgre(char tabela[][8], int n);
+
+static int s_Igralec = 1;
 
 int main()
 {
-	char tabela[8][8];
+	char tabelaIgralec1[8][8];
+	char tabelaIgralec2[8][8];
 
-	VpisTabela(tabela, 8);
-	VpisLadjic(tabela, 8, "Miha");
-	VpisLadjic(tabela, 8, "Bot");
+	VpisTabela(tabelaIgralec1, 8);
+	VpisTabela(tabelaIgralec2, 8);
+	VpisLadjic(tabelaIgralec1, 8, "Igralec 1");
+	VpisLadjic(tabelaIgralec2, 8, "Igralec 2");
+
+	ZamenjajIgralca();
+
+	while (!KonecIgre(tabelaIgralec1, 8) && !KonecIgre(tabelaIgralec2, 8))
+	{
+		if (s_Igralec == 1)
+		{
+			ZadetekLadjice(tabelaIgralec2, 8, "Igralec 2");
+		}
+		else
+		{
+			ZadetekLadjice(tabelaIgralec1, 8, "Igralec 1");
+		}
+	}
+
+	if (s_Igralec == 1)
+	{
+		std::cout << "Zmagal je Igralec 1." << std::endl;
+	}
+	else
+	{
+		std::cout << "Zmagal je Igralec 2." << std::endl;
+	}
 }
 
 void VpisTabela(char tabela[][8], int n)
 {
+	tabela[0][0] = ' ';
+
 	char crka = 'A';
 	char stevilo = '1';
-
-	tabela[0][0] = ' ';
 
 	for (int i = 1; i < n; i++)
 	{
@@ -40,17 +71,36 @@ void VpisTabela(char tabela[][8], int n)
 	}
 }
 
+void IzpisTabela(char tabela[][8], int n, const char* imeIgralnoPolje)
+{
+	system("cls");
+	std::cout << "Igralno polje @ " << imeIgralnoPolje << std::endl << std::endl;
+
+	// Casovna zahtevnost: O(n^2)
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			std::cout << (char)tabela[i][j] << " ";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
+}
+
 void VpisLadjic(char tabela[][8], int n, const char* imeIgralnoPolje)
 {
 	IzpisTabela(tabela, n, imeIgralnoPolje);
 
 	char pozicija[3];
+
 	std::cout << "Vnesi pozicijo letalonosilke ([stolpec][vrstica] ali [vrstica][stolpec])" << std::endl;
 	gets_s(pozicija);
 
 	if (pozicija[0] >= 'a' && pozicija[0] <= 'g')
 	{
 		int i, j;
+
 		switch (pozicija[0])
 		{
 		case 'a':
@@ -101,6 +151,7 @@ void VpisLadjic(char tabela[][8], int n, const char* imeIgralnoPolje)
 			break;
 		}
 
+		// Casovna zahtevnost: O(n)
 		for (int k = 0; k < 5; k++)
 		{
 			tabela[j][i] = 'L';
@@ -110,6 +161,7 @@ void VpisLadjic(char tabela[][8], int n, const char* imeIgralnoPolje)
 	else if (pozicija[0] >= '1' && pozicija[0] <= '7')
 	{
 		int i, j;
+
 		switch (pozicija[0])
 		{
 		case '1':
@@ -160,6 +212,7 @@ void VpisLadjic(char tabela[][8], int n, const char* imeIgralnoPolje)
 			break;
 		}
 
+		// Casovna zahtevnost: O(n)
 		for (int k = 0; k < 5; k++)
 		{
 			tabela[i][j] = 'L';
@@ -175,6 +228,7 @@ void VpisLadjic(char tabela[][8], int n, const char* imeIgralnoPolje)
 	if (pozicija[0] >= 'a' && pozicija[0] <= 'g')
 	{
 		int i, j;
+
 		switch (pozicija[0])
 		{
 		case 'a':
@@ -225,6 +279,7 @@ void VpisLadjic(char tabela[][8], int n, const char* imeIgralnoPolje)
 			break;
 		}
 
+		// Casovna zahtevnost: O(n)
 		for (int k = 0; k < 4; k++)
 		{
 			tabela[j][i] = 'B';
@@ -234,6 +289,7 @@ void VpisLadjic(char tabela[][8], int n, const char* imeIgralnoPolje)
 	else if (pozicija[0] >= '1' && pozicija[0] <= '7')
 	{
 		int i, j;
+
 		switch (pozicija[0])
 		{
 		case '1':
@@ -284,6 +340,7 @@ void VpisLadjic(char tabela[][8], int n, const char* imeIgralnoPolje)
 			break;
 		}
 
+		// Casovna zahtevnost: O(n)
 		for (int k = 0; k < 4; k++)
 		{
 			tabela[i][j] = 'B';
@@ -299,6 +356,7 @@ void VpisLadjic(char tabela[][8], int n, const char* imeIgralnoPolje)
 	if (pozicija[0] >= 'a' && pozicija[0] <= 'g')
 	{
 		int i, j;
+
 		switch (pozicija[0])
 		{
 		case 'a':
@@ -349,6 +407,7 @@ void VpisLadjic(char tabela[][8], int n, const char* imeIgralnoPolje)
 			break;
 		}
 
+		// Casovna zahtevnost: O(n)
 		for (int k = 0; k < 3; k++)
 		{
 			tabela[j][i] = 'P';
@@ -358,6 +417,7 @@ void VpisLadjic(char tabela[][8], int n, const char* imeIgralnoPolje)
 	else if (pozicija[0] >= '1' && pozicija[0] <= '7')
 	{
 		int i, j;
+
 		switch (pozicija[0])
 		{
 		case '1':
@@ -408,6 +468,7 @@ void VpisLadjic(char tabela[][8], int n, const char* imeIgralnoPolje)
 			break;
 		}
 
+		// Casovna zahtevnost: O(n)
 		for (int k = 0; k < 3; k++)
 		{
 			tabela[i][j] = 'P';
@@ -423,6 +484,7 @@ void VpisLadjic(char tabela[][8], int n, const char* imeIgralnoPolje)
 	if (pozicija[0] >= 'a' && pozicija[0] <= 'g')
 	{
 		int i, j;
+
 		switch (pozicija[0])
 		{
 		case 'a':
@@ -473,6 +535,7 @@ void VpisLadjic(char tabela[][8], int n, const char* imeIgralnoPolje)
 			break;
 		}
 
+		// Casovna zahtevnost: O(n)
 		for (int k = 0; k < 2; k++)
 		{
 			tabela[j][i] = 'R';
@@ -482,6 +545,7 @@ void VpisLadjic(char tabela[][8], int n, const char* imeIgralnoPolje)
 	else if (pozicija[0] >= '1' && pozicija[0] <= '7')
 	{
 		int i, j;
+
 		switch (pozicija[0])
 		{
 		case '1':
@@ -532,21 +596,29 @@ void VpisLadjic(char tabela[][8], int n, const char* imeIgralnoPolje)
 			break;
 		}
 
+		// Casovna zahtevnost: O(n)
 		for (int k = 0; k < 2; k++)
 		{
 			tabela[i][j] = 'R';
 			j++;
 		}
 	}
+	IzpisTabela(tabela, n, imeIgralnoPolje);
+}
 
+void ZadetekLadjice(char tabela[][8], int n, const char* imeIgralnoPolje)
+{
 	IzpisTabela(tabela, n, imeIgralnoPolje);
 
-	std::cout << "Vnesi pozicijo rusilca ([stolpec][vrstica] ali [vrstica][stolpec])" << std::endl;
+	char pozicija[3];
+
+	std::cout << "Vnesi pozicijo tarce ([stolpec][vrstica] ali [vrstica][stolpec])" << std::endl;
 	gets_s(pozicija);
 
 	if (pozicija[0] >= 'a' && pozicija[0] <= 'g')
 	{
 		int i, j;
+
 		switch (pozicija[0])
 		{
 		case 'a':
@@ -597,15 +669,24 @@ void VpisLadjic(char tabela[][8], int n, const char* imeIgralnoPolje)
 			break;
 		}
 
-		for (int k = 0; k < 2; k++)
+		switch (tabela[j][i])
 		{
-			tabela[j][i] = 'R';
-			j++;
+		case 'L':
+		case 'B':
+		case 'P':
+		case 'R':
+			std::cout << "Zadetek" << std::endl;
+			IzbrisLadjice(tabela, n, tabela[j][i]);
+			break;
+		default:
+			ZamenjajIgralca();
+			break;
 		}
 	}
 	else if (pozicija[0] >= '1' && pozicija[0] <= '7')
 	{
 		int i, j;
+
 		switch (pozicija[0])
 		{
 		case '1':
@@ -656,28 +737,59 @@ void VpisLadjic(char tabela[][8], int n, const char* imeIgralnoPolje)
 			break;
 		}
 
-		for (int k = 0; k < 2; k++)
+		switch (tabela[i][j])
 		{
-			tabela[i][j] = 'R';
-			j++;
+		case 'L':
+		case 'B':
+		case 'P':
+		case 'R':
+			std::cout << "Zadetek" << std::endl;
+			IzbrisLadjice(tabela, n, tabela[i][j]);
+			break;
+		default:
+			ZamenjajIgralca();
+			break;
 		}
 	}
-
 	IzpisTabela(tabela, n, imeIgralnoPolje);
 }
 
-void IzpisTabela(char tabela[][8], int n, const char* imeIgralnoPolje)
+void IzbrisLadjice(char tabela[][8], int n, char znak)
 {
-	system("cls");
+	// Casovna zahtevnost: O(n^2)
+	for (int i = 1; i < n; i++)
+	{
+		for (int j = 1; j < n; j++)
+		{
+			if (tabela[i][j] == znak)
+			{
+				tabela[i][j] = 'x';
+			}
+		}
+	}
+}
 
-	std::cout << "Igralno polje @ " << imeIgralnoPolje << std::endl << std::endl;
-	for (int i = 0; i < n; i++)
+void ZamenjajIgralca()
+{
+	s_Igralec *= -1;
+}
+
+bool KonecIgre(char tabela[][8], int n)
+{
+	// Casovna zahtevnost: O(n^2)
+	for (int i = 1; i < n; i++)
 	{
 		for (int j = 0; j < n; j++)
 		{
-			std::cout << (char)tabela[i][j] << " ";
+			switch (tabela[i][j])
+			{
+			case 'L':
+			case 'B':
+			case 'P':
+			case 'R':
+				return false;
+			}
 		}
-		std::cout << std::endl;
 	}
-	std::cout << std::endl;
+	return true;
 }
