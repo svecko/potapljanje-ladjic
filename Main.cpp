@@ -4,7 +4,7 @@
 #include <cstdio>
 
 void VpisTabela(char tabela[][8], int n);
-void VpisLadjic(char tabela[][8], int n);
+void VpisLadjic(char tabela[][8], int n, const char* imeIgralnoPolje);
 void IzpisTabela(char tabela[][8], int n, const char* imeIgralnoPolje);
 
 int main()
@@ -12,7 +12,8 @@ int main()
 	char tabela[8][8];
 
 	VpisTabela(tabela, 8);
-	VpisLadjic(tabela, 8);
+	VpisLadjic(tabela, 8, "Miha");
+	VpisLadjic(tabela, 8, "Bot");
 }
 
 void VpisTabela(char tabela[][8], int n)
@@ -39,9 +40,9 @@ void VpisTabela(char tabela[][8], int n)
 	}
 }
 
-void VpisLadjic(char tabela[][8], int n)
+void VpisLadjic(char tabela[][8], int n, const char* imeIgralnoPolje)
 {
-	IzpisTabela(tabela, n, "Miha");
+	IzpisTabela(tabela, n, imeIgralnoPolje);
 
 	char pozicija[3];
 	std::cout << "Vnesi pozicijo letalonosilke ([stolpec][vrstica] ali [vrstica][stolpec])" << std::endl;
@@ -166,7 +167,7 @@ void VpisLadjic(char tabela[][8], int n)
 		}
 	}
 
-	IzpisTabela(tabela, n, "Miha");
+	IzpisTabela(tabela, n, imeIgralnoPolje);
 
 	std::cout << "Vnesi pozicijo bojne ladje ([stolpec][vrstica] ali [vrstica][stolpec])" << std::endl;
 	gets_s(pozicija);
@@ -290,7 +291,7 @@ void VpisLadjic(char tabela[][8], int n)
 		}
 	}
 
-	IzpisTabela(tabela, n, "Miha");
+	IzpisTabela(tabela, n, imeIgralnoPolje);
 
 	std::cout << "Vnesi pozicijo podmornice ([stolpec][vrstica] ali [vrstica][stolpec])" << std::endl;
 	gets_s(pozicija);
@@ -414,7 +415,7 @@ void VpisLadjic(char tabela[][8], int n)
 		}
 	}
 
-	IzpisTabela(tabela, n, "Miha");
+	IzpisTabela(tabela, n, imeIgralnoPolje);
 
 	std::cout << "Vnesi pozicijo rusilca ([stolpec][vrstica] ali [vrstica][stolpec])" << std::endl;
 	gets_s(pozicija);
@@ -538,7 +539,7 @@ void VpisLadjic(char tabela[][8], int n)
 		}
 	}
 
-	IzpisTabela(tabela, n, "Miha");
+	IzpisTabela(tabela, n, imeIgralnoPolje);
 
 	std::cout << "Vnesi pozicijo rusilca ([stolpec][vrstica] ali [vrstica][stolpec])" << std::endl;
 	gets_s(pozicija);
@@ -662,7 +663,7 @@ void VpisLadjic(char tabela[][8], int n)
 		}
 	}
 
-	IzpisTabela(tabela, n, "Miha");
+	IzpisTabela(tabela, n, imeIgralnoPolje);
 }
 
 void IzpisTabela(char tabela[][8], int n, const char* imeIgralnoPolje)
